@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimeStampKeeper", "TimeStampKeeper.vcxproj", "{BE016F8E-0A13-4F1F-BA46-C5A536B99DB2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE016F8E-0A13-4F1F-BA46-C5A536B99DB2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BE016F8E-0A13-4F1F-BA46-C5A536B99DB2}.Debug|Win32.Build.0 = Debug|Win32
+		{BE016F8E-0A13-4F1F-BA46-C5A536B99DB2}.Release|Win32.ActiveCfg = Release|Win32
+		{BE016F8E-0A13-4F1F-BA46-C5A536B99DB2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
