@@ -1,7 +1,7 @@
 ﻿//MainDialog.h
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.02 by x@rgs
+//          TimeStamp Keeper Ver.1.03 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
@@ -27,6 +27,8 @@ public:
 		m_wnd_height(0),
 		m_wnd_width(0),
 		m_settings_menu(inst()),
+		m_confirm_restore(false),
+		m_confirm_clear(false),
 		m_recursive_search(false){
 		}
 	~MainDialog(){
@@ -73,6 +75,12 @@ private:
 	int m_wnd_width;
 
 	sslib::Menu m_settings_menu;
+
+	//復元前に確認ダイアログを表示
+	bool m_confirm_restore;
+
+	//クリア前に確認ダイアログを表示
+	bool m_confirm_clear;
 
 	//再帰的に追加
 	bool m_recursive_search;

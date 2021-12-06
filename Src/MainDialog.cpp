@@ -2,7 +2,7 @@
 //メインダイアログ
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.02 by x@rgs
+//          TimeStamp Keeper Ver.1.03 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
@@ -285,7 +285,13 @@ INT_PTR MainDialog::onInitDialog(WPARAM wparam,LPARAM lparam){
 		std::vector<tstring>& filepaths=static_cast<CommandArgument*>(param())->filepaths();
 
 		for(std::vector<tstring>::size_type i=0,size=options.size();i<size;++i){
-			if(str::isEqualStringIgnoreCase(options[i],_T("r"))){
+			if(str::isEqualStringIgnoreCase(options[i],_T("cr"))){
+				//復元前に確認ダイアログを表示
+				m_confirm_restore=true;
+			}else if(str::isEqualStringIgnoreCase(options[i],_T("cc"))){
+				//クリア前に確認ダイアログを表示
+				m_confirm_clear=true;
+			}else if(str::isEqualStringIgnoreCase(options[i],_T("r"))){
 				//再帰的に追加
 				m_recursive_search=true;
 			}
@@ -317,7 +323,12 @@ INT_PTR MainDialog::onCommand(WPARAM wparam,LPARAM lparam){
 			break;
 
 		case IDM_MENU_CLEAR:
-			m_listview->clear();
+			if(!m_listview->getItemCount())break;
+			if(m_confirm_clear&&::MessageBox(handle(),_T("リストをクリアしますか？"),
+											 (tstring(_T("TimeStamp Keeper Ver."))+SOFTWARE_VERSION).c_str(),MB_YESNO|MB_ICONQUESTION)==IDYES||
+			   !m_confirm_clear){
+				m_listview->clear();
+			}
 			break;
 
 		case IDM_MENU_EDIT:{
@@ -337,6 +348,14 @@ INT_PTR MainDialog::onCommand(WPARAM wparam,LPARAM lparam){
 			}
 			break;
 		}
+
+		case IDM_MENU_CONFIRM_RESTORE:
+			m_confirm_restore=!m_confirm_restore;
+			break;
+
+		case IDM_MENU_CONFIRM_CLEAR:
+			m_confirm_clear=!m_confirm_clear;
+			break;
 
 		case IDM_MENU_RECURSIVE:
 			m_recursive_search=!m_recursive_search;
@@ -363,7 +382,12 @@ INT_PTR MainDialog::onNotify(WPARAM wparam,LPARAM lparam){
 }
 
 INT_PTR MainDialog::onOk(WPARAM wparam,LPARAM lparam){
-	restoreTimeStamp();
+	if(!m_listview->getItemCount())return false;
+	if(m_confirm_restore&&::MessageBox(handle(),_T("タイムスタンプを復元しますか？"),
+									   (tstring(_T("TimeStamp Keeper Ver."))+SOFTWARE_VERSION).c_str(),MB_YESNO|MB_ICONQUESTION)==IDYES||
+	   !m_confirm_restore){
+		restoreTimeStamp();
+	}
 	return false;
 }
 
@@ -412,6 +436,8 @@ INT_PTR MainDialog::onMessage(UINT message,WPARAM wparam,LPARAM lparam){
 	switch(message){
 		case WM_INITMENUPOPUP:{
 			if(m_settings_menu.sub_handle()==reinterpret_cast<HMENU>(wparam)){
+				m_settings_menu.check(IDM_MENU_CONFIRM_RESTORE,m_confirm_restore);
+				m_settings_menu.check(IDM_MENU_CONFIRM_CLEAR,m_confirm_clear);
 				m_settings_menu.check(IDM_MENU_RECURSIVE,m_recursive_search);
 			}
 			break;

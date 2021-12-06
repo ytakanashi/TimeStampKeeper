@@ -1,7 +1,7 @@
 ﻿//TimeStampKeeper.h
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.02 by x@rgs
+//          TimeStamp Keeper Ver.1.03 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`

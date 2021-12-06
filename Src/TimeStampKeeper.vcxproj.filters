@@ -116,9 +116,6 @@
     <ClInclude Include="sslib\CommandArgument.h">
       <Filter>ヘッダー ファイル\sslib</Filter>
     </ClInclude>
-    <ClInclude Include="resources\resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="sslib\String.h">
       <Filter>ヘッダー ファイル\sslib</Filter>
     </ClInclude>
@@ -128,6 +125,9 @@
     <ClInclude Include="sslib\FileSearch.h">
       <Filter>ヘッダー ファイル\sslib</Filter>
     </ClInclude>
+    <ClInclude Include="resources\resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\manifest.xml">
@@ -135,7 +135,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\resources.rc">
+    <Image Include="resources\TimeStampKeeper.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\resource.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 //共通ヘッダファイル
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.02 by x@rgs
+//          TimeStamp Keeper Ver.1.03 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
@@ -73,9 +73,9 @@ typedef std::basic_string<TCHAR>tstring;
 	}name;\
 
 #ifdef _DEBUG
-	#define SOFTWARE_VERSION _T("1.02_Debug")
+	#define SOFTWARE_VERSION _T("1.03_Debug")
 #else
-	#define SOFTWARE_VERSION _T("1.02")
+	#define SOFTWARE_VERSION _T("1.03")
 #endif
 
 
