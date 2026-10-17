@@ -2,7 +2,7 @@
 //メインダイアログ
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.03 by x@rgs
+//          TimeStamp Keeper Ver.1.04 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
@@ -13,6 +13,15 @@
 #include<shlwapi.h>
 
 using namespace sslib;
+
+enum{
+	min_add_year=-999,max_add_year=999,
+	min_add_month=-11,max_add_month=11,
+	min_add_day=-30,max_add_day=30,
+	min_add_hour=-23,max_add_hour=23,
+	min_add_minute=-59,max_add_minute=59,
+	min_add_second=-59,max_add_second=59
+};
 
 
 namespace{
@@ -117,15 +126,33 @@ namespace{
 
 	class EditDialog:public Dialog{
 	public:
-		EditDialog(tstring& name,tstring& timestamp):
+		EditDialog(tstring& name,tstring& timestamp,
+				   int add_date_year,
+				   int add_date_month,
+				   int add_date_day,
+				   int add_date_hour,
+				   int add_date_minute,
+				   int add_date_second):
 		Dialog(IDD_DIALOG_EDIT),
 		m_name(name),
 		m_timestamp(timestamp),
-		m_wMilliseconds(0){}
+		m_wMilliseconds(0),
+		m_add_date_year(add_date_year),
+		m_add_date_month(add_date_month),
+		m_add_date_day(add_date_day),
+		m_add_date_hour(add_date_hour),
+		m_add_date_minute(add_date_minute),
+		m_add_date_second(add_date_second){}
 	private:
 		tstring& m_name;
 		tstring& m_timestamp;
 		WORD m_wMilliseconds;
+		int m_add_date_year;
+		int m_add_date_month;
+		int m_add_date_day;
+		int m_add_date_hour;
+		int m_add_date_minute;
+		int m_add_date_second;
 	private:
 		INT_PTR onInitDialog(WPARAM wparam,LPARAM lparam){
 			if(!m_name.empty()){
@@ -151,6 +178,9 @@ namespace{
 								(WPARAM)GDT_VALID,
 								(LPARAM)&st);
 			}
+
+			::SetWindowText(getDlgItem(IDC_STATIC_ADD_DATE),format(_T("＋%d年%d月%d日 %d時間%d分%d秒"),
+																   m_add_date_year,m_add_date_month,m_add_date_day,m_add_date_hour,m_add_date_minute,m_add_date_second).c_str());
 			return true;
 		}
 
@@ -237,6 +267,125 @@ namespace{
 			return true;
 		}
 	};
+
+	class AddDateDialog:public Dialog{
+	public:
+		AddDateDialog(int& add_date_year,
+					  int& add_date_month,
+					  int& add_date_day,
+					  int& add_date_hour,
+					  int& add_date_minute,
+					  int& add_date_second):
+		Dialog(IDD_DIALOG_ADDDATE),
+		m_add_date_year(add_date_year),
+		m_add_date_month(add_date_month),
+		m_add_date_day(add_date_day),
+		m_add_date_hour(add_date_hour),
+		m_add_date_minute(add_date_minute),
+		m_add_date_second(add_date_second){}
+	private:
+		int& m_add_date_year;
+		int& m_add_date_month;
+		int& m_add_date_day;
+		int& m_add_date_hour;
+		int& m_add_date_minute;
+		int& m_add_date_second;
+	private:
+		INT_PTR onInitDialog(WPARAM wparam,LPARAM lparam){
+			for(int i=min_add_year;i<=max_add_year;i++){
+				sendItemMessage(IDC_COMBO_YEAR,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+			for(int i=min_add_month;i<=max_add_month;i++){
+				sendItemMessage(IDC_COMBO_MONTH,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+			for(int i=min_add_day;i<=max_add_day;i++){
+				sendItemMessage(IDC_COMBO_DAY,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+			for(int i=min_add_hour;i<=max_add_hour;i++){
+				sendItemMessage(IDC_COMBO_HOUR,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+			for(int i=min_add_minute;i<=max_add_minute;i++){
+				sendItemMessage(IDC_COMBO_MINUTE,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+			for(int i=min_add_second;i<=max_add_second;i++){
+				sendItemMessage(IDC_COMBO_SECOND,CB_ADDSTRING,(WPARAM)0,(LPARAM)format(_T("%d"),i).c_str());
+			}
+
+			sendItemMessage(IDC_COMBO_YEAR,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_year-min_add_year),
+							   (LPARAM)0);
+
+			sendItemMessage(IDC_COMBO_MONTH,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_month-min_add_month),
+							   (LPARAM)0);
+
+			sendItemMessage(IDC_COMBO_DAY,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_day-min_add_day),
+							   (LPARAM)0);
+
+			sendItemMessage(IDC_COMBO_HOUR,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_hour-min_add_hour),
+							   (LPARAM)0);
+
+			sendItemMessage(IDC_COMBO_MINUTE,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_minute-min_add_minute),
+							   (LPARAM)0);
+
+			sendItemMessage(IDC_COMBO_SECOND,
+							   CB_SETCURSEL,
+							   (WPARAM)(m_add_date_second-min_add_second),
+							   (LPARAM)0);
+
+			return true;
+		}
+
+		INT_PTR onOk(WPARAM wparam,LPARAM lparam){
+			int index=CB_ERR;
+			int add_date=0;
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_YEAR,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_year;
+				m_add_date_year=(add_date>max_add_year)?max_add_year:(add_date<=min_add_year)?min_add_year:add_date;
+			}
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_MONTH,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_month;
+				m_add_date_month=(add_date>max_add_month)?max_add_month:(add_date<=min_add_month)?min_add_month:add_date;
+			}
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_DAY,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_day;
+				m_add_date_day=(add_date>max_add_day)?max_add_day:(add_date<=min_add_day)?min_add_day:add_date;
+			}
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_HOUR,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_hour;
+				m_add_date_hour=(add_date>max_add_hour)?max_add_hour:(add_date<=min_add_hour)?min_add_hour:add_date;
+			}
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_MINUTE,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_minute;
+				m_add_date_minute=(add_date>max_add_minute)?max_add_minute:(add_date<=min_add_minute)?min_add_minute:add_date;
+			}
+
+			index=static_cast<int>(sendItemMessage(IDC_COMBO_SECOND,CB_GETCURSEL,(WPARAM)0,(LPARAM)0));
+			if(index!=CB_ERR){
+				add_date=index+min_add_second;
+				m_add_date_second=(add_date>max_add_second)?max_add_second:(add_date<=min_add_second)?min_add_second:add_date;
+			}
+			return true;
+		}
+	};
 }
 
 INT_PTR MainDialog::onInitDialog(WPARAM wparam,LPARAM lparam){
@@ -294,6 +443,45 @@ INT_PTR MainDialog::onInitDialog(WPARAM wparam,LPARAM lparam){
 			}else if(str::isEqualStringIgnoreCase(options[i],_T("r"))){
 				//再帰的に追加
 				m_recursive_search=true;
+			}else if(options[i].find(_T("ad"))==0&&
+					 options[i].c_str()[2]>='d'&&options[i].c_str()[2]<='y'&&
+					 isdigit(options[i].c_str()[3])||options[i].c_str()[3]=='-'){
+				float add_date=std::stof(options[i].substr(3));
+
+				switch(options[i].c_str()[2]){
+					case 'y':
+						//指定した年数を加減算する
+						m_add_date_year=static_cast<int>((add_date>max_add_year)?max_add_year:(add_date<=min_add_year)?min_add_year:add_date);
+						break;
+
+					case 'm':
+						//指定した月数を加減算する
+						m_add_date_month=static_cast<int>((add_date>max_add_month)?max_add_month:(add_date<=min_add_month)?min_add_month:add_date);
+						break;
+
+					case 'd':
+						//指定した日数を加減算する
+						m_add_date_day=static_cast<int>((add_date>max_add_day)?max_add_day:(add_date<=min_add_day)?min_add_day:add_date);
+						break;
+
+					case 'h':
+						//指定した時間数を加減算する
+						m_add_date_hour=static_cast<int>((add_date>max_add_hour)?max_add_hour:(add_date<=min_add_hour)?min_add_hour:add_date);
+						break;
+
+					case 'n':
+						//指定した分数を加減算する
+						m_add_date_minute=static_cast<int>((add_date>max_add_minute)?max_add_minute:(add_date<=min_add_minute)?min_add_minute:add_date);
+						break;
+
+					case 's':
+						//指定した秒数を加減算する
+						m_add_date_second=static_cast<int>((add_date>max_add_second)?max_add_second:(add_date<=min_add_second)?min_add_second:add_date);
+						break;
+
+					default:
+						break;
+				}
 			}
 		}
 
@@ -338,7 +526,8 @@ INT_PTR MainDialog::onCommand(WPARAM wparam,LPARAM lparam){
 			tstring timestamp(m_listview->getItemText(index,1));
 			tstring name_old(name);
 			tstring timestamp_old(timestamp);
-			EditDialog edit_dialog(name,timestamp);
+			EditDialog edit_dialog(name,timestamp,
+								   m_add_date_year,m_add_date_month,m_add_date_day,m_add_date_hour,m_add_date_minute,m_add_date_second);
 
 			edit_dialog.doModal(handle());
 			m_listview->setItemText(name.c_str(),index,0);
@@ -360,6 +549,18 @@ INT_PTR MainDialog::onCommand(WPARAM wparam,LPARAM lparam){
 		case IDM_MENU_RECURSIVE:
 			m_recursive_search=!m_recursive_search;
 			break;
+
+		case IDM_MENU_ADD_DATE:{
+			AddDateDialog adddate_dialog(m_add_date_year,
+									  m_add_date_month,
+									  m_add_date_day,
+									  m_add_date_hour,
+									  m_add_date_minute,
+									  m_add_date_second);
+
+			adddate_dialog.doModal(handle());
+			break;
+		}
 
 		default:
 			break;
@@ -479,8 +680,28 @@ void MainDialog::restoreTimeStamp(){
 			FILETIME ft,fttmp;
 
 			longlong2SYSTEMTIME(&st,_tcstoll(timestamp_str.c_str(),NULL,10));
+
+			st.wYear+=m_add_date_year;
+			if(st.wMonth==2&&st.wDay==29&&
+			   !(st.wYear%4==0&&st.wYear%100!=0)||(st.wYear%400==0)){
+				st.wDay=28;
+			}
+
+			if(st.wMonth+m_add_date_month<1)st.wMonth+=m_add_date_month+12;
+			else if(st.wMonth+m_add_date_month>12)st.wMonth+=m_add_date_month-12;
+			else st.wMonth+=m_add_date_month;
+
 			::SystemTimeToFileTime(&st,&fttmp);
 			::LocalFileTimeToFileTime(&fttmp,&ft);
+
+			LONGLONG add_date=
+				static_cast<LONGLONG>((static_cast<LONGLONG>(24*60*60)*(1000*1000*10))*m_add_date_day)+
+					static_cast<LONGLONG>((static_cast<LONGLONG>(60*60)*(1000*1000*10))*m_add_date_hour)+
+						static_cast<LONGLONG>((static_cast<LONGLONG>(60)*(1000*1000*10))*m_add_date_minute)+
+							static_cast<LONGLONG>(((1000*1000*10))*m_add_date_second);
+
+			ft.dwLowDateTime=static_cast<DWORD>(((((static_cast<ULONGLONG>(ft.dwHighDateTime))<<32)+ft.dwLowDateTime)+add_date)&0xFFFFFFFF);
+			ft.dwHighDateTime=static_cast<DWORD>(((((static_cast<ULONGLONG>(ft.dwHighDateTime))<<32)+ft.dwLowDateTime)+add_date)>>32);
 
 			if(setTimeStamp(m_listview->getItemText(item).c_str(),ft)){
 				m_listview->setItemData(FileListView::STATE_COMPLETE,item);

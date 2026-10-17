@@ -95,9 +95,13 @@ public:
 	bool write(const TCHAR* fmt,const va_list argp,LPDWORD written_chars=NULL);
 
 	//文字を出力
-	DWORD outputString(const TCHAR* fmt,...);
+	DWORD outputString(const TCHAR* buffer);
+	//書式付き文字を出力
+	DWORD outputStringF(const TCHAR* fmt,...);
 	//色付文字を出力
-	DWORD outputString(int foreground,int background,const TCHAR* fmt,...);
+	DWORD outputString(int foreground,int background,const TCHAR* buffer);
+	//色・書式付文字を出力
+	DWORD outputStringF(int foreground,int background,const TCHAR* fmt,...);
 
 	//指定した範囲をクリア
 	bool clear(DWORD fill_length,COORD begin_pos);
@@ -117,7 +121,7 @@ public:
 	bool clearCurrentLine();
 
 	//ハンドルを取得
-	inline HANDLE getHandle()const{return m_handle;}
+	inline HANDLE handle()const{return m_handle;}
 
 	//標準出力がリダイレクトされている
 	inline bool isRedirected()const{return m_is_redirected;}

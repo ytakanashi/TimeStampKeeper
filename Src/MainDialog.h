@@ -1,7 +1,7 @@
 ﻿//MainDialog.h
 
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
-//          TimeStamp Keeper Ver.1.03 by x@rgs
+//          TimeStamp Keeper Ver.1.04 by x@rgs
 //              under NYSL Version 0.9982
 //
 //`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`~^`
@@ -29,7 +29,13 @@ public:
 		m_settings_menu(inst()),
 		m_confirm_restore(false),
 		m_confirm_clear(false),
-		m_recursive_search(false){
+		m_recursive_search(false),
+		m_add_date_year(0),
+		m_add_date_month(0),
+		m_add_date_day(0),
+		m_add_date_hour(0),
+		m_add_date_minute(0),
+		m_add_date_second(0){
 		}
 	~MainDialog(){
 		SAFE_DELETE(m_wnd_size_info);
@@ -84,6 +90,14 @@ private:
 
 	//再帰的に追加
 	bool m_recursive_search;
+
+	//加算する日付
+	int m_add_date_year;
+	int m_add_date_month;
+	int m_add_date_day;
+	int m_add_date_hour;
+	int m_add_date_minute;
+	int m_add_date_second;
 
 private:
 	//メッセージハンドラ

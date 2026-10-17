@@ -176,6 +176,12 @@ CommandArgument::CommandArgument(DWORD opt):
 		}
 
 		//標準入力をコンソールに戻す(キーボードからの入力を可能にする)
+#if 1
+		//コンソールからの読み取りはReadFile()/ReadConsole()で行うのでfreopen()は必要なし
+		CloseHandle(GetStdHandle(STD_INPUT_HANDLE));
+		SetStdHandle(STD_INPUT_HANDLE,CreateFile(_T("CONIN$"),GENERIC_READ,FILE_SHARE_READ,NULL,CREATE_ALWAYS,0,0));
+#else
+		//fgets()を使うならfreopen()が必要
 #ifdef _tfreopen_s
 		FILE*dummy;
 		_tfreopen_s(&dummy,
@@ -183,6 +189,7 @@ CommandArgument::CommandArgument(DWORD opt):
 		_tfreopen(
 #endif
 			_T("CON"),_T("r"),stdin);
+#endif
 
 	}
 #endif

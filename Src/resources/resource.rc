@@ -66,6 +66,14 @@ BEGIN
         LEFTMARGIN, 7
         TOPMARGIN, 7
     END
+
+    IDD_DIALOG_ADDDATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -85,6 +93,7 @@ BEGIN
         MENUITEM "再帰的に追加(&S)",                  IDM_MENU_RECURSIVE
         MENUITEM "復元前に確認ダイアログを表示(&R)",          IDM_MENU_CONFIRM_RESTORE
         MENUITEM "クリア前に確認ダイアログを表示(&C)",         IDM_MENU_CONFIRM_CLEAR
+        MENUITEM "日付加減算(&A)",                   IDM_MENU_ADD_DATE
     END
 END
 
@@ -120,6 +129,28 @@ BEGIN
     CONTROL         "",IDC_DATETIMEPICKER_FILE,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,48,25,112,12
     LTEXT           "ファイル名",IDC_STATIC,10,7,34,9
     LTEXT           "更新日時",IDC_STATIC,10,27,35,9
+    LTEXT           "",IDC_STATIC_ADD_DATE,170,27,118,9
+END
+
+IDD_DIALOG_ADDDATE DIALOGEX 0, 0, 309, 87
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "日付加減算"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "年数",IDC_STATIC,24,17,17,8
+    LTEXT           "月数",IDC_STATIC,104,17,17,8
+    LTEXT           "日数",IDC_STATIC,184,17,17,8
+    LTEXT           "時間数",IDC_STATIC,16,41,25,8
+    LTEXT           "分数",IDC_STATIC,104,41,17,8
+    LTEXT           "秒数",IDC_STATIC,184,41,17,8
+    COMBOBOX        IDC_COMBO_YEAR,44,15,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_MONTH,124,15,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_DAY,204,15,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_HOUR,44,39,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_MINUTE,124,39,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_SECOND,204,39,48,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,198,66,50,14,WS_GROUP
+    PUSHBUTTON      "キャンセル",IDCANCEL,252,66,50,14
 END
 
 
@@ -134,6 +165,11 @@ BEGIN
 END
 
 IDD_DIALOG_EDIT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_ADDDATE AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -155,8 +191,8 @@ IDI_ICON1               ICON                    "TimeStampKeeper.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,3,0
- PRODUCTVERSION 1,0,3,0
+ FILEVERSION 1,0,4,0
+ PRODUCTVERSION 1,0,4,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -173,11 +209,11 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Frost Moon Project"
             VALUE "FileDescription", "TimeStamp Keeper"
-            VALUE "FileVersion", "1.03"
+            VALUE "FileVersion", "1.04"
             VALUE "InternalName", "TimeStampKeeper"
             VALUE "LegalCopyright", "Coded by x@rgs"
             VALUE "OriginalFilename", "TimeStampKeeper.exe"
-            VALUE "ProductVersion", "1.03"
+            VALUE "ProductVersion", "1.04"
         END
     END
     BLOCK "VarFileInfo"
